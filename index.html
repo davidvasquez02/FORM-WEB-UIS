@@ -34,7 +34,12 @@
                     <div class="form-group">
                         <input id="gustoName" type="tel" class="form-control" placeholder="Gustos">
                         <button id="btnGusto" class=" input-icon" >Gusto</button>
-                      </div>
+                    </div>
+
+                    <div id="tableBody">
+                        <table id="table" class="table table">
+                        </table>
+                    </div>
 
                     <button type="submit" class="btn btn-primary">Submit</button>
                 </form>
@@ -44,6 +49,7 @@
     </div>
     <script>
         let gustos = [];
+        let contador = 0;
 
         const addGusto=(ev) => {
             ev.preventDefault();
@@ -51,13 +57,109 @@
                 nombre : document.getElementById('gustoName').value,
                 porcentaje : 0
             }
+            contador += 1;
             gustos.push(gusto);
-            console.log(gustos);
+
+            genera_tabla();
+            //makeTable(gustos)
         };
+
+        function genera_tabla() {
+        // O btener la referencia del elemento body
+        document.getElementById("table").remove();
+        
+        var body = document.getElementById("tableBody");
+
+        // Crea un elemento <table> y un elemento <tbody>
+        var tabla   = document.createElement("table");
+
+        tabla.setAttribute('id','table');
+        tabla.setAttribute('class', 'table table-bordered table-responsive')
+    
+        var tblHead = document.createElement('thead');
+        var headGusto = document.createElement("td");
+        var headPorcentaje = document.createElement("td"); 
+        var headEdit = document.createElement("td"); 
+
+        var hileraHead = document.createElement("tr");
+        headGusto.appendChild(document.createTextNode("Gusto"));
+        headPorcentaje.appendChild(document.createTextNode("%"));
+        headEdit.appendChild(document.createTextNode("Edit"));
+        hileraHead.appendChild(headGusto);
+        hileraHead.appendChild(headPorcentaje);
+        hileraHead.appendChild(headEdit);
+
+        tblHead.appendChild(hileraHead);
+
+
+        var tblBody = document.createElement("tbody");
+
+        // Crea las celdas
+        for (var i = 0; i < gustos.length; i++) {
+            // Crea las hileras de la tabla
+            var hilera = document.createElement("tr");
+
+            for (var j = 0; j < 3; j++) {
+            // Crea un elemento <td> y un nodo de texto, haz que el nodo de
+            // texto sea el contenido de <td>, ubica el elemento <td> al final
+            // de la hilera de la tabla
+            var celda = document.createElement("td");
+            if(j == 0){
+                var textoCelda = document.createElement("input");
+                textoCelda.value = gustos[i].nombre;
+                textoCelda.setAttribute("type", "text");
+                textoCelda.setAttribute("id", 'gusto'+i);
+                textoCelda.setAttribute("disabled", "disabled");
+                //var textoCelda = document.createTextNode(gustos[i].nombre);
+                celda.appendChild(textoCelda);
+            }else if(j == 1){
+
+                var textoCelda = document.createElement("input");
+                textoCelda.value = gustos[i].porcentaje;
+                textoCelda.setAttribute("id", 'gustoporcentaje'+i);
+                textoCelda.setAttribute("disabled", "disabled");
+                textoCelda.setAttribute("class", "porcentajetable");
+                //var textoCelda = document.createTextNode(gustos[i].nombre);
+                celda.appendChild(textoCelda);
+            }else{
+                var textoCelda = document.createElement('button')
+                textoCelda.setAttribute("class", "btnEdit");
+                textoCelda.setAttribute("class", "btn"+i);
+                textoCelda.setAttribute("value", i);
+                textoCelda.setAttribute("onclick", "editGusto(this.value)");
+                textoCelda.setAttribute("type","button");
+                textoCelda.appendChild(document.createTextNode("Editar!"));
+                
+
+            }
+            celda.setAttribute('class','table-content')
+            celda.appendChild(textoCelda);
+            hilera.appendChild(celda);
+            }
+
+            // agrega la hilera al final de la tabla (al final del elemento tblbody)
+            tblBody.appendChild(hilera);
+        }
+
+        // posiciona el <tbody> debajo del elemento <table>
+        tabla.appendChild(tblHead);
+        tabla.appendChild(tblBody);
+        // appends <table> into <body>
+        body.appendChild(tabla);
+        // modifica el atributo "border" de la tabla y lo fija a "2";
+        tabla.setAttribute("border", "2");
+        }
+
+        function editGusto(value){
+            document.getElementById('gusto'+value).disabled = false;
+            
+        }
 
         document.addEventListener('DOMContentLoaded', () =>{
             document.getElementById('btnGusto').addEventListener('click', addGusto)
         });
+
+
     </script>
     
 

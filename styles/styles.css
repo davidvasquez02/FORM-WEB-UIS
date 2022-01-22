@@ -73,3 +73,15 @@ html{
     margin: 2rem;
     gap: 1rem;
 }
+.table-content{
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+.table{
+    width: 100%;
+}
+.porcentajetable{
+    max-width: 70px;
+}
